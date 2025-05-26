@@ -48,4 +48,6 @@ dependencies {
 
     //animationc loti
     implementation("com.airbnb.android:lottie:4.0.0")
+
+
 }

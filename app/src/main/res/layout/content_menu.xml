@@ -29,7 +29,7 @@
                 android:layout_margin="10dp"
                 android:src="@drawable/ic_estrella"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toStartOf="id/icImgVolumen"
+                app:layout_constraintEnd_toStartOf="@id/icImgVolumen"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 />

@@ -33,9 +33,18 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+
+    android {
+
+        buildFeatures {
+            dataBinding = true
+        }
+    }
 }
 
 dependencies {
+
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -48,6 +57,9 @@ dependencies {
 
     //animationc loti
     implementation("com.airbnb.android:lottie:4.0.0")
+
+    implementation("androidx.navigation:navigation-fragment-ktx:2.3.5")
+    implementation("androidx.navigation:navigation-ui-ktx:2.3.5")
 
 
 }

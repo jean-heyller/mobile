@@ -1,12 +1,13 @@
 package com.example.myapplication.view.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentHomeBinding
 import com.example.myapplication.view.viewmodel.JuegoViewModel
@@ -14,6 +15,8 @@ import com.example.myapplication.view.viewmodel.JuegoViewModel
 // HomeFragment es un Fragmento que representa una pantalla o sección de la interfaz de usuario.
 // Utiliza Data Binding para acceder a las vistas del layout fragment_home.xml.
 class HomeFragment : Fragment() {
+
+    //private lateinit var navController : NavController
 
     private val juegoViewModel: JuegoViewModel by viewModels()
 
@@ -47,7 +50,7 @@ class HomeFragment : Fragment() {
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        controladores(view)
+        controladores()
         observadorViewModel()
         // Aquí puedes inicializar lógica relacionada con la vista.
 
@@ -55,21 +58,46 @@ class HomeFragment : Fragment() {
     }
 
 
-    private fun controladores(view: View){
+    private fun controladores() {
+        //navController = view.findNavController()
+        binding.icContentMenu.icImgReglas.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_reglasJuegoFragment)
+        }
+
         binding.botonGirar.setOnClickListener {
+            juegoViewModel.girarBotella()
 
         }
     }
 
 
-    private fun observadorViewModel(){
+    private fun observadorViewModel() {
         observeRotacionBotella()
+        observeHabilitarBoton()
+        observeMostrarSerpentina()
+    }
+
+    private fun observeMostrarSerpentina() {
+        juegoViewModel.mostrarSerpentina.observe(viewLifecycleOwner) { mostrarSerpentina ->
+            binding.lottieCerpentina.isVisible = mostrarSerpentina
+            binding.lottieCerpentina.playAnimation()
+        }
+    }
+
+    private fun observeHabilitarBoton() {
+        juegoViewModel.habilitarBoton.observe(viewLifecycleOwner) { habilitarBoton ->
+            binding.botonGirar.isVisible = habilitarBoton
+            binding.lottieCerpentina.isVisible = !habilitarBoton
+        }
     }
 
     private fun observeRotacionBotella() {
-       juegoViewModel.rotacionBotella.observe(viewLifecycleOwner){status ->
-
-
-       }
+        juegoViewModel.rotacionBotella.observe(viewLifecycleOwner) { rotacion ->
+            juegoViewModel.estadoRotacionBotella.observe(viewLifecycleOwner) { estadoRotacion ->
+                if (estadoRotacion) {
+                    binding.ivBotella.startAnimation(rotacion)
+                }
+            }
+        }
     }
 }
